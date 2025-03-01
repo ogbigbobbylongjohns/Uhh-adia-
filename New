@@ -1,1 +1,78 @@
-local local1 = CFrame.new(5771.52832, 7486.85547, 8899.34961, 1, 0, 0, 0, 1, 0, 0, 0, 1) local function local2() for _, local3 in pairs(workspace:GetDescendants()) do if local 3:IsA("BasePart") and local3.CFrame == local1 then return local3 end end return nil end local local4 = local2() if local4 then print("Found: " .. local4.name) for _, local5 in pairs(local4:GetChildren()) do print("Checking: " .. local5.Name) if local5:IsA("ProximityPrompt") then fireproximityprompt(local5) end end else print("nah") end
+local g = CFrame.new(6062.77197, 7485.39941, 9145.93457, 1, 0, -0, 0, 0, 1, 0, -1, 0) 
+local T = game.Players.LocalPlayer.Character.HumanoidRootPart 
+T.CFrame = g 
+print("it works I guess")
+
+wait(0.5)
+
+local localw = CFrame.new(6064.94824, 7485.18262, 9145.56738, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+
+local function locals()
+    for _, localh in pairs(workspace:GetDescendants()) do
+        if localh:IsA("BasePart") and localh.CFrame == localw then
+            return localh
+        end
+    end
+    return nil
+end
+
+local localj = locals()
+local lastPrompt = nil -- Variable to store the last ProximityPrompt
+
+if localj then
+    print("Found: " .. localj.Name)
+    for _, localm in pairs(localj:GetChildren()) do
+        print("Checking: " .. localm.Name)
+        if localm:IsA("ProximityPrompt") then
+            fireproximityprompt(localm)
+            lastPrompt = localm -- Store the last found ProximityPrompt
+        end
+    end
+else
+    print("nah")
+end 
+
+wait(1) 
+
+-- Move Lockpick to Character before next teleport
+game.Players.LocalPlayer.Backpack:WaitForChild("Lockpick").Parent = game.Players.LocalPlayer.Character
+
+-- Now perform the teleport to the next location
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5771.52832, 7486.85547, 8899.34961, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+wait(1) 
+
+local local1 = CFrame.new(5771.52832, 7486.85547, 8899.34961, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+local function local2()
+    for _, local3 in pairs(workspace:GetDescendants()) do
+        if local3:IsA("BasePart") and local3.CFrame == local1 then
+            return local3
+        end
+    end
+    return nil
+end
+
+local local4 = local2()
+
+if local4 then
+    print("Found: " .. local4.Name)
+    for _, local5 in pairs(local4:GetChildren()) do
+        print("Checking: " .. local5.Name)
+        if local5:IsA("ProximityPrompt") then
+            fireproximityprompt(local5)
+            lastPrompt = local5 -- Store the last ProximityPrompt found
+        end
+    end
+else
+    print("nah")
+end
+
+-- **Repeatedly activate the last ProximityPrompt every 0.1 seconds**
+if lastPrompt then
+    while true do
+        wait(0.1) -- Fire the ProximityPrompt every 0.1 seconds
+        fireproximityprompt(lastPrompt)
+        print("Fired last ProximityPrompt again!")
+    end
+end
